@@ -49,19 +49,16 @@
             background-color: #f4f4f9;
         }
         button {
-            color: white;
+            color: #fff;
+            background-color: #28a745;
             border: none;
             cursor: pointer;
+            padding: 10px;
+            border-radius: 4px;
         }
         button:disabled {
             background-color: #ccc;
             cursor: not-allowed;
-        }
-        .btn-enviar {
-            background-color: #28a745;
-        }
-        .btn-enviar:hover {
-            background-color: #218838;
         }
         .list-container {
             width: 100%;
@@ -225,8 +222,7 @@
                 </tbody>
             </table>
         </div>
-
-        <button id="btnEnviar" class="btn-enviar">Enviar</button>
+        <button id="enviar">Enviar</button>
     </div>
 
     <script>
@@ -282,52 +278,66 @@
 
             $(document).on('input', '.cantidad', calcularTotal);
 
-            $('#btnEnviar').on('click', function() {
-                const cliente = JSON.parse($('#cliente').val());
-                const datos = {
-                    CODCliente: cliente.CODCliente,
-                    NumeroIdentidadCliente: $('#identidad').val(),
-                    NombreComercial: $('#nombreNegocio').val(),
-                    DireccionNegocio: $('#direccion').val(),
-                    Motivo: $('#motivo').val(),
-                    Beneficio: $('#beneficio').val(),
-                    Fecha: $('#fecha').val(),
-                    Introduccion: $('input[name="intro-checkbox"]:checked').attr('id'),
-                    Ruta: $('#ruta').val(),
-                    Productos: []
-                };
-
-                $('tbody tr').each(function() {
-                    if ($(this).find('.cantidad').val()) {
-                        datos.Productos.push({
-                            producto: $(this).find('td:first').text(),
-                            cantidad: $(this).find('.cantidad').val(),
-                            precio: $(this).find('.precio').val(),
-                            total: $(this).find('.total').val()
-                        });
-                    }
-                });
-
-                $.ajax({
-                    url: 'http://127.0.0.1:5000/enviar_datos',
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(datos),
-                    success: function(response) {
-                        alert('Datos enviados con éxito');
-                    },
-                    error: function(error) {
-                        console.error('Error al enviar los datos:', error);
-                    }
-                });
-            });
-
             // Set today's date in the fecha input
             const today = new Date().toISOString().split('T')[0];
             $('#fecha').val(today);
 
             // Cargar los clientes al inicio
             cargarClientes();
+
+            // Enviar datos al servidor
+            $('#enviar').on('click', function() {
+                const data = {
+                    CODCliente: $('#cliente').val(),
+                    NumeroIdentidadCliente: $('#identidad').val(),
+                    NombreComercial: $('#nombreNegocio').val(),
+                    DireccionNegocio: $('#direccion').val(),
+                    Motivo: $('#motivo').val(),
+                    Beneficio: $('#beneficio').val(),
+                    Fecha: $('#fecha').val(),
+                    Introduccion: $('.intro-checkbox:checked').attr('id'),
+                    Ruta: $('#ruta').val(),
+                    Pepsi6_5oz_cant: parseFloat($('input[data-row="0"].cantidad').val()) || 0,
+                    Pepsi6_5oz_precio: parseFloat($('input[data-row="0"].precio').val()) || 0,
+                    Pepsi12oz_cant: parseFloat($('input[data-row="1"].cantidad').val()) || 0,
+                    Pepsi12oz_precio: parseFloat($('input[data-row="1"].precio').val()) || 0,
+                    Pepsi500ml_cant: parseFloat($('input[data-row="2"].cantidad').val()) || 0,
+                    Pepsi500ml_precio: parseFloat($('input[data-row="2"].precio').val()) || 0,
+                    Pepsi1_25lts_cant: parseFloat($('input[data-row="3"].cantidad').val()) || 0,
+                    Pepsi1_25lts_precio: parseFloat($('input[data-row="3"].precio').val()) || 0,
+                    MirindaN12oz_cant: parseFloat($('input[data-row="4"].cantidad').val()) || 0,
+                    MirindaN12oz_precio: parseFloat($('input[data-row="4"].precio').val()) || 0,
+                    MirindaB12oz_cant: parseFloat($('input[data-row="5"].cantidad').val()) || 0,
+                    MirindaB12oz_precio: parseFloat($('input[data-row="5"].precio').val()) || 0,
+                    MirindaU12oz_cant: parseFloat($('input[data-row="6"].cantidad').val()) || 0,
+                    MirindaU12oz_precio: parseFloat($('input[data-row="6"].precio').val()) || 0,
+                    MirindaN1_25lts_cant: parseFloat($('input[data-row="7"].cantidad').val()) || 0,
+                    MirindaN1_25lts_precio: parseFloat($('input[data-row="7"].precio').val()) || 0,
+                    sevenup12oz_cant: parseFloat($('input[data-row="8"].cantidad').val()) || 0,
+                    sevenup12oz_precio: parseFloat($('input[data-row="8"].precio').val()) || 0,
+                    teem12oz_cant: parseFloat($('input[data-row="9"].cantidad').val()) || 0,
+                    teem12oz_precio: parseFloat($('input[data-row="9"].precio').val()) || 0,
+                    LinkM6_5oz_cant: parseFloat($('input[data-row="10"].cantidad').val()) || 0,
+                    LinkM6_5oz_precio: parseFloat($('input[data-row="10"].precio').val()) || 0,
+                    LinkB6_5oz_cant: parseFloat($('input[data-row="11"].cantidad').val()) || 0,
+                    LinkB6_5oz_precio: parseFloat($('input[data-row="11"].precio').val()) || 0,
+                    LinkC6_5oz_cant: parseFloat($('input[data-row="12"].cantidad').val()) || 0,
+                    LinkC6_5oz_precio: parseFloat($('input[data-row="12"].precio').val()) || 0
+                };
+
+                $.ajax({
+                    url: 'http://127.0.0.1:5000/guardar_datos',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function(response) {
+                        alert(response.mensaje);
+                    },
+                    error: function(error) {
+                        console.error('Error al enviar los datos:', error);
+                    }
+                });
+            });
         });
     </script>
 </body>
