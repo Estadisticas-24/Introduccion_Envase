@@ -49,13 +49,19 @@
             background-color: #f4f4f9;
         }
         button {
-            color: rgb(0, 0, 0);
+            color: white;
             border: none;
             cursor: pointer;
         }
         button:disabled {
             background-color: #ccc;
             cursor: not-allowed;
+        }
+        .btn-enviar {
+            background-color: #28a745;
+        }
+        .btn-enviar:hover {
+            background-color: #218838;
         }
         .list-container {
             width: 100%;
@@ -219,6 +225,8 @@
                 </tbody>
             </table>
         </div>
+
+        <button id="btnEnviar" class="btn-enviar">Enviar</button>
     </div>
 
     <script>
@@ -273,6 +281,46 @@
             }
 
             $(document).on('input', '.cantidad', calcularTotal);
+
+            $('#btnEnviar').on('click', function() {
+                const cliente = JSON.parse($('#cliente').val());
+                const datos = {
+                    CODCliente: cliente.CODCliente,
+                    NumeroIdentidadCliente: $('#identidad').val(),
+                    NombreComercial: $('#nombreNegocio').val(),
+                    DireccionNegocio: $('#direccion').val(),
+                    Motivo: $('#motivo').val(),
+                    Beneficio: $('#beneficio').val(),
+                    Fecha: $('#fecha').val(),
+                    Introduccion: $('input[name="intro-checkbox"]:checked').attr('id'),
+                    Ruta: $('#ruta').val(),
+                    Productos: []
+                };
+
+                $('tbody tr').each(function() {
+                    if ($(this).find('.cantidad').val()) {
+                        datos.Productos.push({
+                            producto: $(this).find('td:first').text(),
+                            cantidad: $(this).find('.cantidad').val(),
+                            precio: $(this).find('.precio').val(),
+                            total: $(this).find('.total').val()
+                        });
+                    }
+                });
+
+                $.ajax({
+                    url: 'http://127.0.0.1:5000/enviar_datos',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(datos),
+                    success: function(response) {
+                        alert('Datos enviados con éxito');
+                    },
+                    error: function(error) {
+                        console.error('Error al enviar los datos:', error);
+                    }
+                });
+            });
 
             // Set today's date in the fecha input
             const today = new Date().toISOString().split('T')[0];

@@ -1,0 +1,9 @@
+# Ignorar todos los archivos
+*
+
+# Excepto estos archivos
+!.gitignore
+!clientes.json
+!index.html
+!logo.png
+!fondo.png
