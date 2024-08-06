@@ -335,6 +335,19 @@
                     data: JSON.stringify(data),
                     success: function(response) {
                         alert(response.mensaje);
+                        // Resetear formulario después de enviar los datos
+                        $('#cliente').val('').trigger('change');
+                        $('#identidad').val('');
+                        $('#nombreNegocio').val('');
+                        $('#direccion').val('');
+                        $('#motivo').val('');
+                        $('#beneficio').val('');
+                        $('.intro-checkbox').prop('checked', false);
+                        $('#ruta').val('');
+                        $('.cantidad').val('');
+                        $('.total').val('');
+                        $('#totalCantidad').val('');
+                        $('#totalSuma').val('');
                     },
                     error: function(error) {
                         console.error('Error al enviar los datos:', error);
