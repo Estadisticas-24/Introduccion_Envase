@@ -43,7 +43,7 @@
             margin: 5px 0 20px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            box-sizing: border-box.
+            box-sizing: border-box;
         }
         input[readonly] {
             background-color: #f4f4f9;
@@ -54,11 +54,11 @@
             border: none;
             cursor: pointer;
             padding: 10px;
-            border-radius: 4px.
+            border-radius: 4px;
         }
         button:disabled {
             background-color: #ccc;
-            cursor: not-allowed.
+            cursor: not-allowed;
         }
         .list-container {
             width: 100%;
@@ -67,23 +67,32 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             overflow-y: auto;
-            max-height: 50vh.
+            max-height: 50vh;
         }
         .list-container table {
             width: 100%;
-            border-collapse: collapse.
+            border-collapse: collapse;
         }
         .list-container th, .list-container td {
             padding: 10px;
             border: 1px solid #ccc;
-            text-align: left.
+            text-align: left;
         }
         .list-container th {
             background-color: #007BFF;
-            color: white.
+            color: white;
         }
         .total, .precio {
-            background-color: #f4f4f9.
+            background-color: #f4f4f9;
+        }
+        .alert {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            text-align: center;
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -223,6 +232,7 @@
             </table>
         </div>
         <button id="enviar">Enviar</button>
+        <div class="alert" id="successAlert">Datos enviados exitosamente.</div>
     </div>
 
     <script>
@@ -278,14 +288,11 @@
 
             $(document).on('input', '.cantidad', calcularTotal);
 
-            // Set today's date in the fecha input
             const today = new Date().toISOString().split('T')[0];
             $('#fecha').val(today);
 
-            // Cargar los clientes al inicio
             cargarClientes();
 
-            // Enviar datos al servidor
             $('#enviar').on('click', function() {
                 const data = {
                     CODCliente: $('#cliente').val(),
@@ -297,10 +304,32 @@
                     Fecha: $('#fecha').val(),
                     Introduccion: $('.intro-checkbox:checked').attr('id'),
                     Ruta: $('#ruta').val(),
-                    Producto: $('#productosTable tr td:first-child').text(),
-                    Cantidad: parseFloat($('input.cantidad').val()) || 0,
-                    Precio: parseFloat($('input.precio').val()) || 0,
-                    Total: parseFloat($('input.total').val()) || 0
+                    Pepsi6_5oz_cant: parseFloat($('input[data-row="0"].cantidad').val()) || 0,
+                    Pepsi6_5oz_precio: parseFloat($('input[data-row="0"].precio').val()) || 0,
+                    Pepsi12oz_cant: parseFloat($('input[data-row="1"].cantidad').val()) || 0,
+                    Pepsi12oz_precio: parseFloat($('input[data-row="1"].precio').val()) || 0,
+                    Pepsi500ml_cant: parseFloat($('input[data-row="2"].cantidad').val()) || 0,
+                    Pepsi500ml_precio: parseFloat($('input[data-row="2"].precio').val()) || 0,
+                    Pepsi1_25lts_cant: parseFloat($('input[data-row="3"].cantidad').val()) || 0,
+                    Pepsi1_25lts_precio: parseFloat($('input[data-row="3"].precio').val()) || 0,
+                    MirindaN12oz_cant: parseFloat($('input[data-row="4"].cantidad').val()) || 0,
+                    MirindaN12oz_precio: parseFloat($('input[data-row="4"].precio').val()) || 0,
+                    MirindaB12oz_cant: parseFloat($('input[data-row="5"].cantidad').val()) || 0,
+                    MirindaB12oz_precio: parseFloat($('input[data-row="5"].precio').val()) || 0,
+                    MirindaU12oz_cant: parseFloat($('input[data-row="6"].cantidad').val()) || 0,
+                    MirindaU12oz_precio: parseFloat($('input[data-row="6"].precio').val()) || 0,
+                    MirindaN1_25lts_cant: parseFloat($('input[data-row="7"].cantidad').val()) || 0,
+                    MirindaN1_25lts_precio: parseFloat($('input[data-row="7"].precio').val()) || 0,
+                    sevenup12oz_cant: parseFloat($('input[data-row="8"].cantidad').val()) || 0,
+                    sevenup12oz_precio: parseFloat($('input[data-row="8"].precio').val()) || 0,
+                    teem12oz_cant: parseFloat($('input[data-row="9"].cantidad').val()) || 0,
+                    teem12oz_precio: parseFloat($('input[data-row="9"].precio').val()) || 0,
+                    LinkM6_5oz_cant: parseFloat($('input[data-row="10"].cantidad').val()) || 0,
+                    LinkM6_5oz_precio: parseFloat($('input[data-row="10"].precio').val()) || 0,
+                    LinkB6_5oz_cant: parseFloat($('input[data-row="11"].cantidad').val()) || 0,
+                    LinkB6_5oz_precio: parseFloat($('input[data-row="11"].precio').val()) || 0,
+                    LinkC6_5oz_cant: parseFloat($('input[data-row="12"].cantidad').val()) || 0,
+                    LinkC6_5oz_precio: parseFloat($('input[data-row="12"].precio').val()) || 0
                 };
 
                 const flaskServerUrl = 'https://0f983ba1-14cd-451b-ad5d-2070e301fcf5-00-27mdh4gbehjq3.spock.replit.dev/guardar_datos';
@@ -311,8 +340,7 @@
                     contentType: 'application/json',
                     data: JSON.stringify(data),
                     success: function(response) {
-                        alert(response.mensaje);
-                        // Resetear formulario después de enviar los datos
+                        $('#successAlert').show().delay(3000).fadeOut();
                         $('#cliente').val('').trigger('change');
                         $('#identidad').val('');
                         $('#nombreNegocio').val('');
