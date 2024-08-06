@@ -325,8 +325,11 @@
                     LinkC6_5oz_precio: parseFloat($('input[data-row="12"].precio').val()) || 0
                 };
 
+                // Cambia esta URL a la de tu servidor Flask en Replit
+                const flaskServerUrl = 'https://537eb12c-2d38-4e80-b980-39b32a0a48c7-00-3rsj112fa3lhs.spock.replit.dev/guardar_datos';
+
                 $.ajax({
-                    url: 'http://127.0.0.1:5000/guardar_datos',
+                    url: flaskServerUrl,
                     method: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(data),
