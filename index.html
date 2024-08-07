@@ -255,7 +255,7 @@
                     dataType: 'json',
                     success: function(data) {
                         data.forEach(function(cliente) {
-                            $('#cliente').append(new Option(`${cliente.CODCliente} - ${cliente.NombreClienteLegal}`, cliente.CODCliente));
+                            $('#cliente').append(new Option(`${cliente.CODCliente} - ${cliente.NombreClienteLegal}`, JSON.stringify(cliente)));
                         });
                     },
                     error: function(error) {
@@ -265,19 +265,10 @@
             }
 
             $('#cliente').on('change', function() {
-                const selectedCliente = $('#cliente option:selected').text();
-                const clienteArray = selectedCliente.split(' - ');
-                const clienteJSON = JSON.stringify({
-                    CODCliente: clienteArray[0],
-                    NombreClienteLegal: clienteArray[1],
-                    NumeroIdentidadCliente: '',
-                    NombreComercial: '',
-                    DireccionNegocio: ''
-                });
-                $('#identidad').val('');
-                $('#nombreNegocio').val('');
-                $('#direccion').val('');
-                $('#cliente').data('cliente', clienteJSON);
+                const cliente = JSON.parse($(this).val());
+                $('#identidad').val(cliente.NumeroIdentidadCliente);
+                $('#nombreNegocio').val(cliente.NombreComercial);
+                $('#direccion').val(cliente.DireccionNegocio);
             });
 
             function calcularTotal() {
@@ -306,9 +297,6 @@
             cargarClientes();
 
             $('#enviar').on('click', function() {
-                const cliente = $('#cliente').data('cliente');
-                const clienteObj = JSON.parse(cliente);
-
                 const data = {
                     CODCliente: clienteObj.CODCliente,
                     NumeroIdentidadCliente: $('#identidad').val(),
