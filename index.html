@@ -17,9 +17,10 @@
             background-color: #f7f7f7;
             margin: 0;
             padding: 20px;
+            overflow-x: hidden; /* Oculta el desplazamiento horizontal */
         }
         .container {
-            max-width: 600px;
+            max-width: 800px; /* Ajuste el tamaño del contenedor */
             width: 100%;
             background: rgba(255, 255, 255, 0.815);
             padding: 20px;
@@ -27,7 +28,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             margin: 0 auto;
             overflow-y: auto;
-            max-height: 80vh;
+            max-height: 90vh; /* Ajuste el tamaño del contenedor */
         }
         h1 {
             color: #333;
@@ -72,11 +73,13 @@
         .list-container table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed; /* Añadido para eliminar el desplazamiento horizontal */
         }
         .list-container th, .list-container td {
             padding: 10px;
             border: 1px solid #ccc;
             text-align: left;
+            word-wrap: break-word; /* Añadido para que el contenido de las celdas no desborde */
         }
         .list-container th {
             background-color: #007BFF;
@@ -84,6 +87,15 @@
         }
         .total, .precio {
             background-color: #f4f4f9;
+        }
+        .alert {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            text-align: center;
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -223,6 +235,7 @@
             </table>
         </div>
         <button id="enviar">Enviar</button>
+        <div class="alert" id="successAlert">Datos enviados exitosamente.</div>
     </div>
 
     <script>
@@ -278,14 +291,11 @@
 
             $(document).on('input', '.cantidad', calcularTotal);
 
-            // Set today's date in the fecha input
             const today = new Date().toISOString().split('T')[0];
             $('#fecha').val(today);
 
-            // Cargar los clientes al inicio
             cargarClientes();
 
-            // Enviar datos al servidor
             $('#enviar').on('click', function() {
                 const data = {
                     CODCliente: $('#cliente').val(),
@@ -325,8 +335,7 @@
                     LinkC6_5oz_precio: parseFloat($('input[data-row="12"].precio').val()) || 0
                 };
 
-                // Cambia esta URL a la de tu servidor Flask en Replit
-                const flaskServerUrl = 'https://537eb12c-2d38-4e80-b980-39b32a0a48c7-00-3rsj112fa3lhs.spock.replit.dev/guardar_datos';
+                const flaskServerUrl = 'https://0f983ba1-14cd-451b-ad5d-2070e301fcf5-00-27mdh4gbehjq3.spock.replit.dev/guardar_datos';
 
                 $.ajax({
                     url: flaskServerUrl,
@@ -334,10 +343,14 @@
                     contentType: 'application/json',
                     data: JSON.stringify(data),
                     success: function(response) {
-                        alert(response.mensaje);
+                        console.log('Datos enviados exitosamente:', response);
+                        alert('Datos enviados exitosamente');
+                        location.reload(); // Recarga la página después de mostrar el mensaje
                     },
                     error: function(error) {
                         console.error('Error al enviar los datos:', error);
+                        alert('Error al enviar los datos');
+                        location.reload(); // Recarga la página después de mostrar el mensaje
                     }
                 });
             });
