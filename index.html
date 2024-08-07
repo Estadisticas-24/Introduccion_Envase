@@ -255,8 +255,7 @@
                     dataType: 'json',
                     success: function(data) {
                         data.forEach(function(cliente) {
-                            $('#cliente').append(new Option(`${cliente.CODCliente} - ${cliente.NombreClienteLegal}`, cliente.CODCliente));
-                            $('#cliente').data('cliente', cliente);
+                            $('#cliente').append(new Option(`${cliente.CODCliente} - ${cliente.NombreClienteLegal}`, JSON.stringify(cliente)));
                         });
                     },
                     error: function(error) {
@@ -266,7 +265,7 @@
             }
 
             $('#cliente').on('change', function() {
-                const cliente = $('#cliente').data('cliente');
+                const cliente = JSON.parse($(this).val());
                 $('#identidad').val(cliente.NumeroIdentidadCliente);
                 $('#nombreNegocio').val(cliente.NombreComercial);
                 $('#direccion').val(cliente.DireccionNegocio);
@@ -298,10 +297,10 @@
             cargarClientes();
 
             $('#enviar').on('click', function() {
-                const cliente = $('#cliente').data('cliente');
+                const cliente = JSON.parse($('#cliente').val());
 
                 const data = {
-                    CODCliente: $('#cliente').val(),
+                    CODCliente: cliente.CODCliente,
                     NumeroIdentidadCliente: $('#identidad').val(),
                     NombreComercial: $('#nombreNegocio').val(),
                     DireccionNegocio: $('#direccion').val(),
