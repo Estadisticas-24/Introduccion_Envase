@@ -54,7 +54,9 @@ def commit_and_push_to_github(repo_path, commit_message):
         repo.git.add('--all')
         repo.index.commit(commit_message)
         origin = repo.remote(name='origin')
-        origin.push()
+        push_info = origin.push()
+        if push_info[0].flags & git.PushInfo.ERROR:
+            return f"Error al subir el proyecto a GitHub: {push_info[0].summary}"
         return "Proyecto subido a GitHub exitosamente."
     except Exception as e:
         return f"Error al subir el proyecto a GitHub: {e}"
