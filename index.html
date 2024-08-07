@@ -255,7 +255,8 @@
                     dataType: 'json',
                     success: function(data) {
                         data.forEach(function(cliente) {
-                            $('#cliente').append(new Option(`${cliente.CODCliente} - ${cliente.NombreClienteLegal}`, JSON.stringify(cliente)));
+                            $('#cliente').append(new Option(`${cliente.CODCliente} - ${cliente.NombreClienteLegal}`, cliente.CODCliente));
+                            $('#cliente').data('cliente', cliente);
                         });
                     },
                     error: function(error) {
@@ -265,7 +266,7 @@
             }
 
             $('#cliente').on('change', function() {
-                const cliente = JSON.parse($(this).val());
+                const cliente = $('#cliente').data('cliente');
                 $('#identidad').val(cliente.NumeroIdentidadCliente);
                 $('#nombreNegocio').val(cliente.NombreComercial);
                 $('#direccion').val(cliente.DireccionNegocio);
@@ -297,8 +298,10 @@
             cargarClientes();
 
             $('#enviar').on('click', function() {
+                const cliente = $('#cliente').data('cliente');
+
                 const data = {
-                    CODCliente: clienteObj.CODCliente,
+                    CODCliente: $('#cliente').val(),
                     NumeroIdentidadCliente: $('#identidad').val(),
                     NombreComercial: $('#nombreNegocio').val(),
                     DireccionNegocio: $('#direccion').val(),
@@ -334,6 +337,8 @@
                     LinkC6_5oz_cant: parseFloat($('input[data-row="12"].cantidad').val()) || 0,
                     LinkC6_5oz_precio: parseFloat($('input[data-row="12"].precio').val()) || 0
                 };
+
+                console.log('Datos enviados:', data); // Verifica los datos en la consola
 
                 const flaskServerUrl = 'https://0f983ba1-14cd-451b-ad5d-2070e301fcf5-00-27mdh4gbehjq3.spock.replit.dev/guardar_datos';
 
