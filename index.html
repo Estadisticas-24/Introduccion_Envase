@@ -97,11 +97,17 @@
             text-align: center;
             border-radius: 4px;
         }
+
+        /* Agrega este estilo para el espacio entre "Ruta" y "Productos" */
+        #ruta {
+            margin-bottom: 30px; /* Ajusta el espacio entre Ruta y Productos */
+        }
     </style>
 </head>
 <body>
     <div id="containerPromorack" class="container active">
         <h1>Introduccion de Envase</h1>
+
         <label for="cliente">Cliente:</label>
         <select id="cliente">
             <option value="">Selecciona un cliente</option>
@@ -125,14 +131,111 @@
         <label for="fecha">Fecha:</label>
         <input type="date" id="fecha" readonly>
         <br>
+
         <label>Introducción:</label>
         <div class="checkbox-group">
             <label><input type="checkbox" class="intro-checkbox" id="cc"> C/C</label>
             <label><input type="checkbox" class="intro-checkbox" id="sc"> S/C</label>
         </div>
         <br>
+
         <label for="ruta">No. de Ruta:</label>
-        <input type="text" id="ruta">
+        <select id="ruta">
+            <option value="">Selecciona una ruta</option>
+            <option value="01">01</option>
+            <option value="02">02</option>
+            <option value="03">03</option>
+            <option value="04">04</option>
+            <option value="05">05</option>
+            <option value="06">06</option>
+            <option value="07">07</option>
+            <option value="08">08</option>
+            <option value="09">09</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27 - PRI">27 - PRI</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+            <option value="32">32</option>
+            <option value="33">33</option>
+            <option value="34">34</option>
+            <option value="35">35</option>
+            <option value="36">36</option>
+            <option value="37">37</option>
+            <option value="38">38</option>
+            <option value="39">39</option>
+            <option value="40">40</option>
+            <option value="42">42</option>
+            <option value="43">43</option>
+            <option value="44">44</option>
+            <option value="45">45</option>
+            <option value="46">46</option>
+            <option value="47">47</option>
+            <option value="90 - PRI">90 - PRI</option>
+            <option value="91 - PRI">91 - PRI</option>
+            <option value="601">601</option>
+            <option value="602">602</option>
+            <option value="603">603</option>
+            <option value="604">604</option>
+            <option value="900 - Delivery">900 - Delivery</option>
+            <option value="901 - PRI">901 - PRI</option>
+            <option value="903 - PRI">903 - PRI</option>
+            <option value="904 - PRI">904 - PRI</option>
+            <option value="905 - PRI">905 - PRI</option>
+            <option value="906 - PRI">906 - PRI</option>
+            <option value="907 - PRI">907 - PRI</option>
+            <option value="908 - PRI">908 - PRI</option>
+            <option value="950">950</option>
+            <option value="951">951</option>
+            <option value="952">952</option>
+            <option value="2002">2002</option>
+            <option value="7002">7002</option>
+            <option value="7003">7003</option>
+            <option value="7004">7004</option>
+            <option value="7005">7005</option>
+            <option value="7006">7006</option>
+            <option value="7007">7007</option>
+            <option value="7008">7008</option>
+            <option value="7009">7009</option>
+            <option value="7010">7010</option>
+            <option value="7011">7011</option>
+            <option value="7012">7012</option>
+            <option value="7013">7013</option>
+            <option value="7014">7014</option>
+            <option value="8001">8001</option>
+            <option value="8002">8002</option>
+            <option value="8003">8003</option>
+            <option value="8004">8004</option>
+            <option value="8005">8005</option>
+            <option value="8006">8006</option>
+            <option value="8007">8007</option>
+            <option value="8008">8008</option>
+            <option value="8009">8009</option>
+            <option value="8010 - PRI">8010 - PRI</option>
+            <option value="8011">8011</option>
+            <option value="8013">8013</option>
+            <option value="8016">8016</option>
+            <option value="8017">8017</option>
+            <option value="8019">8019</option>
+            <option value="8020">8020</option>
+        </select>
         <br>
 
         <div class="list-container">
@@ -240,7 +343,8 @@
 
     <script>
         $(document).ready(function() {
-            $('#cliente').select2();
+            // Inicializa el select2 para el campo de "Cliente" y "Ruta"
+            $('#cliente, #ruta').select2();
 
             $('.intro-checkbox').on('change', function() {
                 if ($(this).is(':checked')) {
@@ -353,7 +457,7 @@
                     },
                     error: function(error) {
                         console.error('Error al enviar los datos:', error);
-                        alert('Error al enviar los datos');
+                        alert('Error al enviar los datos. Los servidores actualmente se encuentran en mantenimiento, inténtelo más tarde. Comuniquese con el departamento de Estadisticas Comercial para mas informacion');
                         location.reload(); // Recarga la página después de mostrar el mensaje
                     }
                 });
